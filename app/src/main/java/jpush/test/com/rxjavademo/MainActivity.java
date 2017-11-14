@@ -30,6 +30,7 @@ import retrofit.Retrofit;
 import retrofit.RxJavaCallAdapterFactory;
 import rx.Observable;
 import rx.Observer;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
 import rx.functions.Action1;
@@ -105,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @OnClick({R.id.tv1, R.id.clear})
+    @OnClick({R.id.tv1, R.id.clear, R.id.tv_download})
     void onClickEvent(View view) {
         switch (view.getId()) {
             case R.id.tv1:
@@ -115,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                 //rxJavaMethod3();
                 //rxJavaMethod4();
                 //rxJavaMethod5();
-                rxJavaMethod6();
+                rxJavaMethod7();
 
 
                 break;
@@ -125,6 +126,10 @@ public class MainActivity extends AppCompatActivity {
                 //requestData();
                 requesFromPresenter();  //从presenter请求网络获取数据
                 break;
+
+            case R.id.tv_download:      //开启多线程下载
+                startActivity(new Intent(this, ThreadDownActivity.class));
+
         }
     }
 
@@ -321,6 +326,20 @@ public class MainActivity extends AppCompatActivity {
 
     public void setMainActivityData(String data) {
         tv2.setText(data);
+    }
+
+    private void rxJavaMethod7() {
+        Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                subscriber.onNext("onNext()执行方法");
+            }
+        }).subscribe(new Action1<String>() {
+            @Override
+            public void call(String s) {
+                Log.i("Action1", s);
+            }
+        });
     }
 }
 
