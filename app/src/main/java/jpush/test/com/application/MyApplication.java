@@ -1,6 +1,7 @@
 package jpush.test.com.application;
 
 import android.app.Application;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.anye.greendao.gen.DaoMaster;
@@ -19,15 +20,18 @@ public class MyApplication extends Application {
     private DaoMaster mDaoMaster;
     private DaoSession mDaoSession;
     private volatile static MyApplication appContext;
+    private static Context mContext;
+
 
     @Override
     public void onCreate() {
         super.onCreate();
 //        setDatabase();
+        mContext = getApplicationContext();
     }
+
     /**
      * 单例 - 双重校验锁
-     *
      */
     public static MyApplication getInstance() {
         if (appContext == null) {
@@ -39,6 +43,10 @@ public class MyApplication extends Application {
         }
 
         return appContext;
+    }
+
+    public static Context getContext() {
+        return mContext;
     }
 
     private void setDatabase() {

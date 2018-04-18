@@ -17,7 +17,7 @@ public class EntityManager {
      * @return
      */
     public UserDao getUserDao(){
-        userDao = DaoManager.getInstance().getSession().getUserDao();
+        userDao = GreenDaoManager.getInstance().getSession().getUserDao();
         return userDao;
     }
 

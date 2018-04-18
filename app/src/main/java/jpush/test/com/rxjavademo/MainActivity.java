@@ -21,6 +21,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import jpush.test.com.Module.MainModule;
+import jpush.test.com.R;
+import jpush.test.com.activity.GreenDaoActivity;
 import jpush.test.com.bean.Poetry;
 import jpush.test.com.component.DaggerMainComponent;
 import jpush.test.com.component.MainComponent;
@@ -133,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.tv_greendao:      //GreenDao
 //               startActivity(new Intent(this));
+                startActivity(new Intent(this, GreenDaoActivity.class));
                 break;
 
         }

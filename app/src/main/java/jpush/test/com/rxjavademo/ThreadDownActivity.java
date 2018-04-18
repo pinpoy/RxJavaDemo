@@ -27,6 +27,7 @@ import java.net.URL;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import jpush.test.com.R;
 import rx.functions.Action1;
 
 public class ThreadDownActivity extends AppCompatActivity {
