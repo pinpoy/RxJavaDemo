@@ -23,7 +23,7 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        setDatabase();
+//        setDatabase();
     }
     /**
      * 单例 - 双重校验锁

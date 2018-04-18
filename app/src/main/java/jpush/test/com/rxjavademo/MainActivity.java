@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @OnClick({R.id.tv1, R.id.clear, R.id.tv_download})
+    @OnClick({R.id.tv1, R.id.clear, R.id.tv_download,R.id.tv_greendao})
     void onClickEvent(View view) {
         switch (view.getId()) {
             case R.id.tv1:
@@ -129,6 +129,11 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.tv_download:      //开启多线程下载
                 startActivity(new Intent(this, ThreadDownActivity.class));
+                break;
+
+            case R.id.tv_greendao:      //GreenDao
+//               startActivity(new Intent(this));
+                break;
 
         }
     }
