@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -15,12 +16,16 @@ import com.jakewharton.rxbinding.view.RxView;
 import com.squareup.okhttp.OkHttpClient;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import jpush.test.com.Module.MainModule;
+import jpush.test.com.Module.PoetryModule;
 import jpush.test.com.R;
 import jpush.test.com.activity.GreenDaoActivity;
 import jpush.test.com.bean.Poetry;
@@ -74,15 +79,17 @@ public class MainActivity extends AppCompatActivity {
         openPermission();   //开启相机权限
 
         DaggerMainComponent.builder()
-                .mainModule(new MainModule(this))
+                .mainModule(new MainModule())
+                .poetryModule(new PoetryModule())
                 .build()
                 .inject(this);
+
 
     }
 
     private void requesFromPresenter() {
-        //tv2.setText(poetry.getPemo());
-        mainPresenter.loadData();
+        tv2.setText(poetry.getPemo());
+        //mainPresenter.loadData();
         //tv2.setText(gson.toJson(poetry.getPemo()));
     }
 
@@ -108,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @OnClick({R.id.tv1, R.id.clear, R.id.tv_download,R.id.tv_greendao})
+    @OnClick({R.id.tv1, R.id.clear, R.id.tv_download, R.id.tv_greendao, R.id.tv_sha_256})
     void onClickEvent(View view) {
         switch (view.getId()) {
             case R.id.tv1:
@@ -136,6 +143,21 @@ public class MainActivity extends AppCompatActivity {
             case R.id.tv_greendao:      //GreenDao
 //               startActivity(new Intent(this));
                 startActivity(new Intent(this, GreenDaoActivity.class));
+                break;
+
+            case R.id.tv_sha_256:      //加密SHA-256
+                try {
+                    String message = "我爱世界杯";
+                    byte[] input = message.getBytes();
+                    MessageDigest sha = MessageDigest.getInstance("SHA-256");
+                    sha.update(input);
+
+                    byte[] output = sha.digest();
+                    String result = Base64.encodeToString(output, Base64.DEFAULT);
+                    Log.i("Mainactivity",result);
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
                 break;
 
         }
