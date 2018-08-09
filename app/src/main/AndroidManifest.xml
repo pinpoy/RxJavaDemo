@@ -23,6 +23,7 @@
         </activity>
         <activity android:name=".rxjavademo.ThreadDownActivity"></activity>
         <activity android:name=".activity.GreenDaoActivity"></activity>
+        <activity android:name=".activity.WebviewActivity"></activity>
     </application>
 
 </manifest>

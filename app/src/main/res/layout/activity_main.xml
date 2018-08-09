@@ -99,6 +99,29 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
+
+        <TextView
+            android:id="@+id/tv_request_xml"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="#963251"
+            android:padding="10dp"
+            android:text="网络请求xml"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_open_webview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="#963251"
+            android:padding="10dp"
+            android:text="打开webview---"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
     </LinearLayout>
 
 </RelativeLayout>

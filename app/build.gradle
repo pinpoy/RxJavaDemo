@@ -9,10 +9,12 @@ android {
     defaultConfig {
         applicationId "jpush.test.com.rxjavademo"
         minSdkVersion 15
-        targetSdkVersion 23
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        // Enabling multidex support.
+        multiDexEnabled true
 
         //防止出现Annotation processors must be explicitly declared now的错误
         javaCompileOptions {        //java编译配置参数
@@ -32,6 +34,10 @@ android {
         schemaVersion 1
         daoPackage 'com.anye.greendao.gen'
         targetGenDir 'src/main/java'
+    }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
     }
 }
 
@@ -54,9 +60,12 @@ dependencies {
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.9.1@aar'
 
     // network
-    compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
-    compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
-    compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-beta2'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
+    compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta4'
+    compile 'com.squareup.retrofit2:converter-simplexml:2.0.0-beta4'
+    // 正式打包注释掉（只适用于DEBUG 拦截Retrofit POST 请求Body Log）
+    compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
 
     //GreenDao 3.0采用注解的方式来定义实体类，通过gradle插件生成相应的代码。
     compile 'org.greenrobot:greendao:3.0.1'

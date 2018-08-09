@@ -13,11 +13,15 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.jakewharton.rxbinding.view.RxView;
-import com.squareup.okhttp.OkHttpClient;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -28,13 +32,17 @@ import jpush.test.com.Module.MainModule;
 import jpush.test.com.Module.PoetryModule;
 import jpush.test.com.R;
 import jpush.test.com.activity.GreenDaoActivity;
+import jpush.test.com.activity.WebviewActivity;
 import jpush.test.com.bean.Poetry;
 import jpush.test.com.component.DaggerMainComponent;
-import jpush.test.com.component.MainComponent;
 import jpush.test.com.presenter.MainPresenter;
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
-import retrofit.RxJavaCallAdapterFactory;
+import jpush.test.com.utils.Md5Utils;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
@@ -70,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
     Gson gson;
     @Inject
     MainPresenter mainPresenter;
+    private static String TAG = "RetrofitManager";
+    private OkHttpClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +95,38 @@ public class MainActivity extends AppCompatActivity {
                 .inject(this);
 
 
+        addInterceptors();//添加拦截器---打印日志
+
+
+    }
+
+    /**
+     * OkHttp3添加拦截器的方法
+     */
+    private void addInterceptors() {
+//
+//        // 这个可以自定义打印内容，但是无法打印服务器返回的内容
+//        client = new OkHttpClient.Builder()
+//                .addInterceptor(new Interceptor() {
+//                    @Override
+//                    public Response intercept(Chain chain) throws IOException {
+//                        long t1 = System.nanoTime();
+//                        Request request = chain.request();
+//                        Log.i(TAG, String.format("Sending request %s on %s%n%s",
+//                                request.url(), chain.connection(), request.headers()));
+//                        Response response = chain.proceed(request);
+//                        Log.i(TAG, request.toString());
+//                        long t2 = System.nanoTime();
+//                        Log.i(TAG, String.format("Received response for %s in %.1fms%n%s",
+//                                request.url(), (t2 - t1) / 1e6d, response.headers()));
+//                        return response;
+//                    }
+//                }) // 这个可以自定义打印内容，但是无法打印服务器返回的内容
+//                .build();
+
+        client = new OkHttpClient.Builder()
+                .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                .build();
     }
 
     private void requesFromPresenter() {
@@ -115,7 +157,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @OnClick({R.id.tv1, R.id.clear, R.id.tv_download, R.id.tv_greendao, R.id.tv_sha_256})
+    @OnClick({R.id.tv1, R.id.clear, R.id.tv_download, R.id.tv_greendao, R.id.tv_sha_256,
+            R.id.tv_request_xml,R.id.tv_open_webview})
     void onClickEvent(View view) {
         switch (view.getId()) {
             case R.id.tv1:
@@ -124,8 +167,8 @@ public class MainActivity extends AppCompatActivity {
                 //rxJavaMethod2();
                 //rxJavaMethod3();
                 //rxJavaMethod4();
-                //rxJavaMethod5();
-                rxJavaMethod7();
+                rxJavaMethod5();
+//                rxJavaMethod7();
 
 
                 break;
@@ -154,10 +197,17 @@ public class MainActivity extends AppCompatActivity {
 
                     byte[] output = sha.digest();
                     String result = Base64.encodeToString(output, Base64.DEFAULT);
-                    Log.i("Mainactivity",result);
+                    Log.i("Mainactivity", result);
                 } catch (NoSuchAlgorithmException e) {
                     e.printStackTrace();
                 }
+                break;
+
+            case R.id.tv_request_xml:       //网络请求返回xml格式
+                requestToXml();
+                break;
+            case R.id.tv_open_webview:       //网络请求返回xml格式
+                startActivity(new Intent(this, WebviewActivity.class));
                 break;
 
         }
@@ -324,13 +374,35 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    public void setMainActivityData(String data) {
+        tv2.setText(data);
+    }
+
+    /**
+     * rxJavaMethod7
+     * =======================================================================
+     */
+    private void rxJavaMethod7() {
+        Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                subscriber.onNext("onNext()执行方法");
+            }
+        }).subscribe(new Action1<String>() {
+            @Override
+            public void call(String s) {
+                Log.i("Action1", s);
+            }
+        });
+    }
+
     /**
      * 网络请求
      */
     //http://mtest.spider.com.cn/appmerch20/getPaperList.action?
     private void requestData() {
         new Retrofit.Builder()
-                .client(new OkHttpClient())
+                .client(client)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl("http://mtest.spider.com.cn/appmerch20/")
@@ -354,23 +426,115 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    public void setMainActivityData(String data) {
-        tv2.setText(data);
+
+    /**
+     * 网络请求，返回xml
+     */
+    private void requestToXml() {
+        new Retrofit.Builder()
+                .client(client)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(SimpleXmlConverterFactory.create())
+                .baseUrl("http://180.96.21.204:29086/")
+                .build()
+                .create(ApiService.class)
+                .getDataToXml(getOnlinePayMap())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Orderxml>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(Orderxml orderxml) {
+                        //存储订单数据
+                        saveOrderData(orderxml);
+
+                        //表示充值成功，保存订单信息
+                        if ("0".equals(orderxml.getResultno())) {
+
+                        }
+                    }
+                });
     }
 
-    private void rxJavaMethod7() {
-        Observable.create(new Observable.OnSubscribe<String>() {
-            @Override
-            public void call(Subscriber<? super String> subscriber) {
-                subscriber.onNext("onNext()执行方法");
-            }
-        }).subscribe(new Action1<String>() {
-            @Override
-            public void call(String s) {
-                Log.i("Action1", s);
-            }
-        });
+    /**
+     * 利用LeanCloud云存储的api进行联网上报
+     *
+     * @param orderxml
+     */
+    private void saveOrderData(Orderxml orderxml) {
+        new Retrofit.Builder()
+                .client(client)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl("https://orhvf0bg.api.lncld.net/1.1/classes/")
+                .build()
+                .create(ApiService.class)
+                .saveOrder(orderxml)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(Object o) {
+
+                    }
+                });
     }
+
+
+    public static Map<String, String> getOnlinePayMap() {
+        Date date = new Date();
+        DateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+        String time = format.format(date);
+
+        String userid = "10001795";//商户数字id
+        String productid = "";//商品编号
+        String price = "10";//商品面值
+        String num = "1";//固定值
+        String mobile = "15205152300";//充值的号码（手机号,加油卡等）
+        String spordertime = time;
+        String sporderid = "1008990";//商户自定义订单号(32位以内)---------要变更的
+        String key = "26b3e879b2d8bbae0eeca2907f3fc988";//商户Key
+        String back_url = "http://47.105.57.119:8080/index.html";//商户回调接口
+
+        String sign = Md5Utils.MD5HEX("userid=" + userid + "&productid=" +
+                productid + "&price=" + price + "&num=" + num + "&mobile=" +
+                mobile + "&spordertime=" + spordertime + "&sporderid=" +
+                sporderid + "&key=" + key);
+
+        Map<String, String> map = new HashMap<>();
+        map.put("userid", userid);
+        map.put("productid", productid);
+        map.put("price", price);
+        map.put("num", num);
+        map.put("mobile", mobile);
+        map.put("spordertime", spordertime);
+        map.put("sporderid", sporderid);
+        map.put("sign", sign);
+        map.put("back_url", back_url);
+
+        return map;
+    }
+
+
 }
 
 
