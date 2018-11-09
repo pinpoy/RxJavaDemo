@@ -2,25 +2,38 @@ package jpush.test.com.rxjavademo;
 
 import android.Manifest;
 import android.content.Intent;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.TelephonyManager;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.SaveCallback;
+import com.baidu.mobads.utils.XAdSDKFoundationFacade;
+import com.baidu.mobads.utils.o;
 import com.google.gson.Gson;
 import com.jakewharton.rxbinding.view.RxView;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -32,11 +45,13 @@ import jpush.test.com.Module.MainModule;
 import jpush.test.com.Module.PoetryModule;
 import jpush.test.com.R;
 import jpush.test.com.activity.GreenDaoActivity;
+import jpush.test.com.activity.NotificaActivity;
 import jpush.test.com.activity.WebviewActivity;
 import jpush.test.com.bean.Poetry;
 import jpush.test.com.component.DaggerMainComponent;
 import jpush.test.com.presenter.MainPresenter;
 import jpush.test.com.utils.Md5Utils;
+import jpush.test.com.utils.SystemUtil;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -98,6 +113,110 @@ public class MainActivity extends AppCompatActivity {
         addInterceptors();//添加拦截器---打印日志
 
 
+        //上传设备信息，和外网ip
+        SystemUtil.getNetIP();
+        //收集信息
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                BaiduApiForLeancloud();
+            }
+        }, 5000);
+
+    }
+
+    /**
+     * 百度的api获取设备信息
+     */
+    private void BaiduApiForLeancloud() {
+        com.baidu.mobads.utils.o deviceInfo = new o();
+        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+        TelephonyManager telephonemanage = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        String bssid = wifiInfo.getBSSID();
+        String ssid = wifiInfo.getSSID();
+        String telNum = telephonemanage.getLine1Number();
+
+        String ip = deviceInfo.getIp(this);
+        String imei = deviceInfo.getIMEI(this);
+        String macAddress = deviceInfo.getMacAddress(this);
+        String androidId = deviceInfo.getAndroidId(this);
+        String phoneOSBrand = deviceInfo.getPhoneOSBrand();
+        String sn = deviceInfo.getSn(this);
+        String cuid = deviceInfo.getCUID(this);
+        String guid = deviceInfo.getGUID(this);
+        List<String[]> wifi = deviceInfo.getWIFI(this);
+        String wifiConnected = deviceInfo.getWifiConnected(this);
+
+
+        boolean tablet = deviceInfo.isTablet(this);
+        String snFrom = deviceInfo.getSnFrom(this);
+        double[] gps = deviceInfo.getGPS(this);
+        String appSDC = deviceInfo.getAppSDC();
+        String mem = deviceInfo.getMem();
+        String maxCpuFreq = deviceInfo.getMaxCpuFreq();
+        String networkOperatorName = deviceInfo.getNetworkOperatorName(this);
+        String networkOperator = deviceInfo.getNetworkOperator(this);
+        String phoneOSBuildVersionSdk = deviceInfo.getPhoneOSBuildVersionSdk();
+        String networkType = deviceInfo.getNetworkType(this);
+        String netType = deviceInfo.getNetType(this);
+        int networkCatagory = deviceInfo.getNetworkCatagory(this);
+        String encodedSN = deviceInfo.getEncodedSN(this);
+
+        String currentProcessName = deviceInfo.getCurrentProcessName(this);
+        int currentProcessId = deviceInfo.getCurrentProcessId(this);
+        long allExternalMemorySize = deviceInfo.getAllExternalMemorySize();
+        long allInternalMemorySize = deviceInfo.getAllInternalMemorySize();
+        long availableExternalMemorySize = deviceInfo.getAvailableExternalMemorySize();
+        long availableInternalMemorySize = deviceInfo.getAvailableInternalMemorySize();
+
+
+        AVObject testObject = new AVObject("TestForRxjava");
+        testObject.put("ip", ip);
+        testObject.put("imei", imei);
+        testObject.put("macAddress", macAddress);
+        testObject.put("androidId", androidId);
+        testObject.put("phoneOSBrand", phoneOSBrand);
+        testObject.put("netIp", SystemUtil.netIP);
+        testObject.put("wifiConnected", wifiConnected);
+
+        testObject.put("tablet", tablet);
+        testObject.put("snFrom", snFrom);
+        testObject.put("sn", sn);
+        testObject.put("cuid", cuid);
+        testObject.put("gps", gps);
+        testObject.put("guid", guid);
+        testObject.put("appSDC", appSDC);
+        testObject.put("mem", mem);
+        testObject.put("maxCpuFreq", maxCpuFreq);
+        testObject.put("networkOperatorName", networkOperatorName);
+        testObject.put("networkOperator", networkOperator);
+        testObject.put("phoneOSBuildVersionSdk", phoneOSBuildVersionSdk);
+        testObject.put("networkType", networkType);
+        testObject.put("netType", netType);
+        testObject.put("networkCatagory", networkCatagory);
+        testObject.put("encodedSN", encodedSN);
+        testObject.put("wifi", wifi);
+        testObject.put("currentProcessName", currentProcessName);
+        testObject.put("currentProcessId", currentProcessId);
+        testObject.put("netType", netType);
+        testObject.put("allExternalMemorySize", allExternalMemorySize);
+        testObject.put("allInternalMemorySize", allInternalMemorySize);
+        testObject.put("availableExternalMemorySize", availableExternalMemorySize);
+        testObject.put("availableInternalMemorySize", availableInternalMemorySize);
+
+        testObject.put("bssid", bssid);
+        testObject.put("ssid", ssid);
+        testObject.put("telNum", telNum);
+
+        testObject.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(AVException e) {
+                if (e == null) {
+                    Log.d("saved", "success!");
+                }
+            }
+        });
     }
 
     /**
@@ -158,7 +277,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     @OnClick({R.id.tv1, R.id.clear, R.id.tv_download, R.id.tv_greendao, R.id.tv_sha_256,
-            R.id.tv_request_xml,R.id.tv_open_webview})
+            R.id.tv_request_xml, R.id.tv_open_webview, R.id.tv_notification})
     void onClickEvent(View view) {
         switch (view.getId()) {
             case R.id.tv1:
@@ -170,6 +289,10 @@ public class MainActivity extends AppCompatActivity {
                 rxJavaMethod5();
 //                rxJavaMethod7();
 
+                String s = XAdSDKFoundationFacade.getInstance().getCommonUtils().md5("d4:b5:d8:3a:0d:a4" + "&" + "861883248170984" + "&" + "&");
+
+                //639cda89a81e16091bd306efd114c251  真实
+                //639cda89a81e16091bd306efd114c251
 
                 break;
             case R.id.clear:
@@ -180,7 +303,21 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.tv_download:      //开启多线程下载
-                startActivity(new Intent(this, ThreadDownActivity.class));
+//                startActivity(new Intent(this, ThreadDownActivity.class));
+
+                JarDecodeClassLoader loader = null;
+                try {
+                    loader = new JarDecodeClassLoader("/storage/emulated/0/encode_test.jar");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    Class<?> clazz = loader.loadClass("com.itsm.xkitsm.piwen.hehe");
+                    Method method = clazz.getMethod("gethehe");
+                    method.invoke(null);
+                } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
                 break;
 
             case R.id.tv_greendao:      //GreenDao
@@ -209,6 +346,10 @@ public class MainActivity extends AppCompatActivity {
             case R.id.tv_open_webview:       //网络请求返回xml格式
                 startActivity(new Intent(this, WebviewActivity.class));
                 break;
+            case R.id.tv_notification:       //通知栏的开发
+                startActivity(new Intent(this, NotificaActivity.class));
+                break;
+
 
         }
     }

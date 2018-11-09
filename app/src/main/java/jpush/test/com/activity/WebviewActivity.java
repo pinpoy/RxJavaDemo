@@ -1,14 +1,22 @@
 package jpush.test.com.activity;
 
+import android.net.wifi.ScanResult;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import jpush.test.com.R;
+import jpush.test.com.utils.SystemUtil;
 
 /**
  * 帮助webview的页面
@@ -27,13 +35,27 @@ public class WebviewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_webview);
         ButterKnife.bind(this);
 
-        filePath = "http://www.baidu.com";
+        filePath = "https://cpu.baidu.com/block/app/cd8c941f/17231";
 
 
         initPage(filePath);
+
+//        Settings.System.putString(getContentResolver(), "com.baidu.deviceid", null);
+//        String var2 = Settings.System.getString(getContentResolver(), "com.baidu.deviceid");
+//        String var3 = Settings.System.getString(getContentResolver(), "bd_setting_i");
+
+
+
+        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+        WifiInfo connectionInfo = wifiManager.getConnectionInfo();
+        String ssid = connectionInfo.getSSID();
+
+        List<ScanResult> scanResults = wifiManager.getScanResults();
+
+        String mobileMAC = SystemUtil.getMobileMAC(this);
+
+
     }
-
-
 
 
     private void initPage(String filePath) {

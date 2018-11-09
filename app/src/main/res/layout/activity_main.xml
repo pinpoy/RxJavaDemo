@@ -122,6 +122,28 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/tv_notification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="#963251"
+            android:padding="10dp"
+            android:text="通知栏"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_jar_encode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="#963251"
+            android:padding="10dp"
+            android:text="jar加密"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
     </LinearLayout>
 
 </RelativeLayout>

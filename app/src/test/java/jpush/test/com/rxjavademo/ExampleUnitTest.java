@@ -1,5 +1,7 @@
 package jpush.test.com.rxjavademo;
 
+import android.provider.Settings;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
