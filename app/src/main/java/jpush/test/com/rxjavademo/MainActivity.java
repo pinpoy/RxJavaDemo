@@ -24,9 +24,6 @@ import com.google.gson.Gson;
 import com.jakewharton.rxbinding.view.RxView;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
@@ -305,19 +302,11 @@ public class MainActivity extends AppCompatActivity {
             case R.id.tv_download:      //开启多线程下载
 //                startActivity(new Intent(this, ThreadDownActivity.class));
 
-                JarDecodeClassLoader loader = null;
-                try {
-                    loader = new JarDecodeClassLoader("/storage/emulated/0/encode_test.jar");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    Class<?> clazz = loader.loadClass("com.itsm.xkitsm.piwen.hehe");
-                    Method method = clazz.getMethod("gethehe");
-                    method.invoke(null);
-                } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
-                }
+//                String s1 = Hello.helloJni();
+//                Toast.makeText(this, s1, Toast.LENGTH_SHORT).show();
+
+                String s1 = Java2CJNI.java2c();
+                Toast.makeText(this, s1, Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.tv_greendao:      //GreenDao

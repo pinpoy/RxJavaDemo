@@ -29,7 +29,6 @@
         <activity android:name=".activity.GreenDaoActivity"></activity>
         <activity android:name=".activity.WebviewActivity"></activity>
         <activity android:name=".activity.NotificaActivity"></activity>
-        <activity android:name=".activity.JarEncode"></activity>
     </application>
 
 </manifest>
