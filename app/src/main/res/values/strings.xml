@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">RxJavaDemo</string>
+    <string name="app_name">webview点击</string>
+    <string name="description">这是一个神秘的故事，从前有座山，山里有个庙</string>
+    <string name="title_activity_command_init">CommandInitActivity</string>
 </resources>

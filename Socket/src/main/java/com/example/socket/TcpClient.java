@@ -1,5 +1,7 @@
 package com.example.servicesocket;
 
+import com.example.socket.CircularQueue;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -45,6 +47,7 @@ public class TcpClient {
     }
 
     public static void main(String[] args){
-        new TcpClient();
+//        new TcpClient();
+
     }
 }

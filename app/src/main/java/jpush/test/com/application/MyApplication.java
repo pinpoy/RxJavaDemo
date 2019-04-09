@@ -2,8 +2,11 @@ package jpush.test.com.application;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 
-import com.avos.avoscloud.AVOSCloud;
+
+import jpush.test.com.service.BootService;
 
 /**
  * @author: 徐鹏android
@@ -20,9 +23,12 @@ public class MyApplication extends Application {
         super.onCreate();
         mContext = this;
 
-        // 初始化参数依次为 this, AppId, AppKey
-        AVOSCloud.initialize(this,"7J6exxS1tvNrkMW8jkMfCGRt-gzGzoHsz","4hKKFfaTvPASWEak9lDhl79d");
-        AVOSCloud.setDebugLogEnabled(true);
+        Log.i("xupeng","MyApplication的oncreate");
+
+
+        //开机的时候：开启后台常驻服务
+//        Intent bootIntent = new Intent(this, BootService.class);
+//        startService(bootIntent);
     }
 
     public static Context getContext() {

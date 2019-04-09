@@ -2,35 +2,29 @@ package jpush.test.com.rxjavademo;
 
 import android.Manifest;
 import android.content.Intent;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
-import android.telephony.TelephonyManager;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.AVObject;
-import com.avos.avoscloud.SaveCallback;
-import com.baidu.mobads.utils.XAdSDKFoundationFacade;
-import com.baidu.mobads.utils.o;
 import com.google.gson.Gson;
 import com.jakewharton.rxbinding.view.RxView;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -38,17 +32,13 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import jpush.test.com.Module.MainModule;
-import jpush.test.com.Module.PoetryModule;
 import jpush.test.com.R;
 import jpush.test.com.activity.GreenDaoActivity;
 import jpush.test.com.activity.NotificaActivity;
 import jpush.test.com.activity.WebviewActivity;
 import jpush.test.com.bean.Poetry;
-import jpush.test.com.component.DaggerMainComponent;
 import jpush.test.com.presenter.MainPresenter;
 import jpush.test.com.utils.Md5Utils;
-import jpush.test.com.utils.SystemUtil;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -93,153 +83,47 @@ public class MainActivity extends AppCompatActivity {
     private static String TAG = "RetrofitManager";
     private OkHttpClient client;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        openPermission();   //开启相机权限
+//        openPermission();   //开启相机权限
+//
+//        DaggerMainComponent.builder()
+//                .mainModule(new MainModule())
+//                .poetryModule(new PoetryModule())
+//                .build()
+//                .inject(this);
+//
+//
+//        addInterceptors();//添加拦截器---打印日志
+//
+//
+//        //上传设备信息，和外网ip
+//        SystemUtil.getNetIP();
+//        //收集信息
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                BaiduApiForLeancloud();
+//            }
+//        }, 5000);
 
-        DaggerMainComponent.builder()
-                .mainModule(new MainModule())
-                .poetryModule(new PoetryModule())
-                .build()
-                .inject(this);
-
-
-        addInterceptors();//添加拦截器---打印日志
-
-
-        //上传设备信息，和外网ip
-        SystemUtil.getNetIP();
-        //收集信息
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                BaiduApiForLeancloud();
-            }
-        }, 5000);
 
     }
 
-    /**
-     * 百度的api获取设备信息
-     */
-    private void BaiduApiForLeancloud() {
-        com.baidu.mobads.utils.o deviceInfo = new o();
-        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
-        TelephonyManager telephonemanage = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-        String bssid = wifiInfo.getBSSID();
-        String ssid = wifiInfo.getSSID();
-        String telNum = telephonemanage.getLine1Number();
-
-        String ip = deviceInfo.getIp(this);
-        String imei = deviceInfo.getIMEI(this);
-        String macAddress = deviceInfo.getMacAddress(this);
-        String androidId = deviceInfo.getAndroidId(this);
-        String phoneOSBrand = deviceInfo.getPhoneOSBrand();
-        String sn = deviceInfo.getSn(this);
-        String cuid = deviceInfo.getCUID(this);
-        String guid = deviceInfo.getGUID(this);
-        List<String[]> wifi = deviceInfo.getWIFI(this);
-        String wifiConnected = deviceInfo.getWifiConnected(this);
 
 
-        boolean tablet = deviceInfo.isTablet(this);
-        String snFrom = deviceInfo.getSnFrom(this);
-        double[] gps = deviceInfo.getGPS(this);
-        String appSDC = deviceInfo.getAppSDC();
-        String mem = deviceInfo.getMem();
-        String maxCpuFreq = deviceInfo.getMaxCpuFreq();
-        String networkOperatorName = deviceInfo.getNetworkOperatorName(this);
-        String networkOperator = deviceInfo.getNetworkOperator(this);
-        String phoneOSBuildVersionSdk = deviceInfo.getPhoneOSBuildVersionSdk();
-        String networkType = deviceInfo.getNetworkType(this);
-        String netType = deviceInfo.getNetType(this);
-        int networkCatagory = deviceInfo.getNetworkCatagory(this);
-        String encodedSN = deviceInfo.getEncodedSN(this);
-
-        String currentProcessName = deviceInfo.getCurrentProcessName(this);
-        int currentProcessId = deviceInfo.getCurrentProcessId(this);
-        long allExternalMemorySize = deviceInfo.getAllExternalMemorySize();
-        long allInternalMemorySize = deviceInfo.getAllInternalMemorySize();
-        long availableExternalMemorySize = deviceInfo.getAvailableExternalMemorySize();
-        long availableInternalMemorySize = deviceInfo.getAvailableInternalMemorySize();
 
 
-        AVObject testObject = new AVObject("TestForRxjava");
-        testObject.put("ip", ip);
-        testObject.put("imei", imei);
-        testObject.put("macAddress", macAddress);
-        testObject.put("androidId", androidId);
-        testObject.put("phoneOSBrand", phoneOSBrand);
-        testObject.put("netIp", SystemUtil.netIP);
-        testObject.put("wifiConnected", wifiConnected);
 
-        testObject.put("tablet", tablet);
-        testObject.put("snFrom", snFrom);
-        testObject.put("sn", sn);
-        testObject.put("cuid", cuid);
-        testObject.put("gps", gps);
-        testObject.put("guid", guid);
-        testObject.put("appSDC", appSDC);
-        testObject.put("mem", mem);
-        testObject.put("maxCpuFreq", maxCpuFreq);
-        testObject.put("networkOperatorName", networkOperatorName);
-        testObject.put("networkOperator", networkOperator);
-        testObject.put("phoneOSBuildVersionSdk", phoneOSBuildVersionSdk);
-        testObject.put("networkType", networkType);
-        testObject.put("netType", netType);
-        testObject.put("networkCatagory", networkCatagory);
-        testObject.put("encodedSN", encodedSN);
-        testObject.put("wifi", wifi);
-        testObject.put("currentProcessName", currentProcessName);
-        testObject.put("currentProcessId", currentProcessId);
-        testObject.put("netType", netType);
-        testObject.put("allExternalMemorySize", allExternalMemorySize);
-        testObject.put("allInternalMemorySize", allInternalMemorySize);
-        testObject.put("availableExternalMemorySize", availableExternalMemorySize);
-        testObject.put("availableInternalMemorySize", availableInternalMemorySize);
-
-        testObject.put("bssid", bssid);
-        testObject.put("ssid", ssid);
-        testObject.put("telNum", telNum);
-
-        testObject.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(AVException e) {
-                if (e == null) {
-                    Log.d("saved", "success!");
-                }
-            }
-        });
-    }
 
     /**
      * OkHttp3添加拦截器的方法
      */
     private void addInterceptors() {
-//
-//        // 这个可以自定义打印内容，但是无法打印服务器返回的内容
-//        client = new OkHttpClient.Builder()
-//                .addInterceptor(new Interceptor() {
-//                    @Override
-//                    public Response intercept(Chain chain) throws IOException {
-//                        long t1 = System.nanoTime();
-//                        Request request = chain.request();
-//                        Log.i(TAG, String.format("Sending request %s on %s%n%s",
-//                                request.url(), chain.connection(), request.headers()));
-//                        Response response = chain.proceed(request);
-//                        Log.i(TAG, request.toString());
-//                        long t2 = System.nanoTime();
-//                        Log.i(TAG, String.format("Received response for %s in %.1fms%n%s",
-//                                request.url(), (t2 - t1) / 1e6d, response.headers()));
-//                        return response;
-//                    }
-//                }) // 这个可以自定义打印内容，但是无法打印服务器返回的内容
-//                .build();
-
         client = new OkHttpClient.Builder()
                 .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                 .build();
@@ -272,31 +156,50 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    private static final Intent sSettingsIntent =
+            new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
 
     @OnClick({R.id.tv1, R.id.clear, R.id.tv_download, R.id.tv_greendao, R.id.tv_sha_256,
             R.id.tv_request_xml, R.id.tv_open_webview, R.id.tv_notification})
     void onClickEvent(View view) {
         switch (view.getId()) {
             case R.id.tv1:
-                tv2.setText("北京欢迎你");
+
                 //rxJavaMethod();
                 //rxJavaMethod2();
                 //rxJavaMethod3();
                 //rxJavaMethod4();
-                rxJavaMethod5();
+//                rxJavaMethod5();
 //                rxJavaMethod7();
 
-                String s = XAdSDKFoundationFacade.getInstance().getCommonUtils().md5("d4:b5:d8:3a:0d:a4" + "&" + "861883248170984" + "&" + "&");
+//                String s = XAdSDKFoundationFacade.getInstance().getCommonUtils().md5("d4:b5:d8:3a:0d:a4" + "&" + "861883248170984" + "&" + "&");
 
                 //639cda89a81e16091bd306efd114c251  真实
                 //639cda89a81e16091bd306efd114c251
+
+
+//                Intent globalService = new Intent(this, GlobalTouchService.class);
+//                startService(globalService);
+
+
+//                startActivityForResult(sSettingsIntent, 0x123);
+
+//                String s = doCommand("reboot");
+//                Log.i("xupeng",s);
+//
+//                tv2.setText(s);
+
+
 
                 break;
             case R.id.clear:
 //                sb.setLength(0);
 //                tv2.setText(" ");
                 //requestData();
-                requesFromPresenter();  //从presenter请求网络获取数据
+//                requesFromPresenter();  //从presenter请求网络获取数据
+
+                String str = new String(Base64.decode("aHR0cDovL2FwaS5reGNvbnRyb2wuY29tOjY2Ni92MS9jb25maWc=", 0));
+                Log.d(TAG, "main: " + str);
                 break;
 
             case R.id.tv_download:      //开启多线程下载
@@ -628,6 +531,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
+
+
+
 
 
     public static Map<String, String> getOnlinePayMap() {

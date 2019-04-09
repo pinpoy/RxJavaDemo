@@ -5,13 +5,6 @@
     android:orientation="vertical">
 
 
-    <!--<WebView-->
-    <!--android:id="@+id/web_webview"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:overScrollMode="never"-->
-    <!--android:scrollbarSize="3.67dip" />-->
-
     <FrameLayout
         android:id="@+id/fl_content"
         android:layout_width="match_parent"
@@ -21,7 +14,7 @@
             android:id="@+id/tv_error"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="提示信息"
+            android:text="初始化页面"
             android:textSize="30sp" />
     </FrameLayout>
 
