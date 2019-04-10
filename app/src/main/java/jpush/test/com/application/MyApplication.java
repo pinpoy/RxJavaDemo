@@ -23,8 +23,6 @@ public class MyApplication extends Application {
         super.onCreate();
         mContext = this;
 
-        Log.i("xupeng","MyApplication的oncreate");
-
 
         //开机的时候：开启后台常驻服务
 //        Intent bootIntent = new Intent(this, BootService.class);

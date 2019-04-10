@@ -7,7 +7,7 @@ android {
     compileSdkVersion 23
     buildToolsVersion '26.0.2'
     defaultConfig {
-        applicationId "jpush.test.com.rxjavademo.webview"       //jpush.test.com.rxjavademo
+        applicationId "jpush.test.com.rxjavademo"       //jpush.test.com.rxjavademo
         minSdkVersion 19
         targetSdkVersion 22
         versionCode 1

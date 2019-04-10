@@ -16,9 +16,6 @@ import com.google.gson.Gson;
 import com.jakewharton.rxbinding.view.RxView;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
@@ -39,6 +36,7 @@ import jpush.test.com.activity.WebviewActivity;
 import jpush.test.com.bean.Poetry;
 import jpush.test.com.presenter.MainPresenter;
 import jpush.test.com.utils.Md5Utils;
+import jpush.test.com.utils.SystemUtil;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -115,11 +113,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
-
-
-
     /**
      * OkHttp3添加拦截器的方法
      */
@@ -165,31 +158,8 @@ public class MainActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.tv1:
 
-                //rxJavaMethod();
-                //rxJavaMethod2();
-                //rxJavaMethod3();
-                //rxJavaMethod4();
-//                rxJavaMethod5();
-//                rxJavaMethod7();
-
-//                String s = XAdSDKFoundationFacade.getInstance().getCommonUtils().md5("d4:b5:d8:3a:0d:a4" + "&" + "861883248170984" + "&" + "&");
-
-                //639cda89a81e16091bd306efd114c251  真实
-                //639cda89a81e16091bd306efd114c251
-
-
-//                Intent globalService = new Intent(this, GlobalTouchService.class);
-//                startService(globalService);
-
-
-//                startActivityForResult(sSettingsIntent, 0x123);
-
-//                String s = doCommand("reboot");
-//                Log.i("xupeng",s);
-//
-//                tv2.setText(s);
-
-
+                String imei = SystemUtil.getIMEI(this);
+                Toast.makeText(this, imei, Toast.LENGTH_SHORT).show();
 
                 break;
             case R.id.clear:
@@ -531,9 +501,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
-
-
-
 
 
     public static Map<String, String> getOnlinePayMap() {
