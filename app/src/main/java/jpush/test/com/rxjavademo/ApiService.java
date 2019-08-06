@@ -27,6 +27,9 @@ public interface ApiService {
     @GET("getPaperList.action?")
     Observable<JavaBean> getData();
 
+    @GET("v1/message/tab?ss=SkVTR09PX1dJRklfNUc%3D%0A&sr=1080*1920&isp=460110687763015&lan=zh-cn&lon=MTIxLjU5ODcx%0A&mi=861240031165988&fr=ANDROID&ch=360APP&cc=cn&kpf=ANDROID&dpbs=3sCt3iAAMjE1NjY1NzYwAAIQAIinM9cDaj9E7RAAAAB7RJkEjcBGiK0QtZpbTltP%0A&did=ANDROID_93143c92213a1c0e&kpn=pearl&app=pearl&os=ZFXCNCT5801803011S%20release-keys&oc=Coolpad&md=C107-9&nt=WIFI&ve=1.5.3.63&__clientSign2=ae7wgAGN_9YyMTU2NjU3NjA5Y2U3ZGU5ZGU0NmYyMGJjNDk4YWNjNTUyNGFhNjYwZTA&lat=MzEuMjA5MzQ1%0A&adve=1.0")
+    Observable<Object> getCharles();
+
 
     @FormUrlEncoded
     @POST("onlinepay.do? ")

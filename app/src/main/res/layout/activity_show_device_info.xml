@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="jpush.test.com.rxjavademo.ShowDeviceInfoActivity">
+
+    <TextView
+        android:id="@+id/tv_imei"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#567"
+        android:gravity="center"
+        android:text="IMEI"
+        android:textSize="30dp" />
+
+    <TextView
+        android:id="@+id/tv_imsi"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="#567"
+        android:gravity="center"
+        android:text="IMSI"
+        android:textSize="30dp" />
+
+    <TextView
+        android:id="@+id/tv_brand"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="#567"
+        android:gravity="center"
+        android:text="BRAND"
+        android:textSize="30dp" />
+
+    <TextView
+        android:id="@+id/tv_model"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="#567"
+        android:gravity="center"
+        android:text="MODEL"
+        android:textSize="30dp" />
+</LinearLayout>

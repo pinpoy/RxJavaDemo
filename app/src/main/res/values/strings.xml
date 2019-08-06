@@ -2,4 +2,6 @@
     <string name="app_name">webview点击</string>
     <string name="description">这是一个神秘的故事，从前有座山，山里有个庙</string>
     <string name="title_activity_command_init">CommandInitActivity</string>
+    <string name="title_activity_show_device_info">ShowDeviceInfoActivity</string>
+    <string name="title_activity_event_bus_second">EventBusSecondActivity</string>
 </resources>

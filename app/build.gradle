@@ -7,7 +7,7 @@ android {
     compileSdkVersion 23
     buildToolsVersion '26.0.2'
     defaultConfig {
-        applicationId "jpush.test.com.rxjavademo"       //jpush.test.com.rxjavademo
+        applicationId "jpush.test.com.rxjavademo2"       //jpush.test.com.rxjavademo
         minSdkVersion 19
         targetSdkVersion 22
         versionCode 1
@@ -94,6 +94,8 @@ dependencies {
     //Dagger2
     compile 'com.google.dagger:dagger:2.4'
     compile 'com.google.dagger:dagger-compiler:2.4'
+
+    compile 'org.greenrobot:eventbus:3.1.1'
 
 
 }

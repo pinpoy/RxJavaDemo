@@ -37,6 +37,7 @@ import jpush.test.com.bean.Poetry;
 import jpush.test.com.presenter.MainPresenter;
 import jpush.test.com.utils.Md5Utils;
 import jpush.test.com.utils.SystemUtil;
+import jpush.test.com.utils.TelephonyUtils;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -96,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
 //                .inject(this);
 //
 //
-//        addInterceptors();//添加拦截器---打印日志
+        addInterceptors();//添加拦截器---打印日志
 //
 //
 //        //上传设备信息，和外网ip
@@ -157,9 +158,10 @@ public class MainActivity extends AppCompatActivity {
     void onClickEvent(View view) {
         switch (view.getId()) {
             case R.id.tv1:
-
-                String imei = SystemUtil.getIMEI(this);
-                Toast.makeText(this, imei, Toast.LENGTH_SHORT).show();
+//
+//                String imei = TelephonyUtils.readLocalFile();
+//                Toast.makeText(this, imei, Toast.LENGTH_SHORT).show();
+                requestCharles();
 
                 break;
             case R.id.clear:
@@ -464,6 +466,36 @@ public class MainActivity extends AppCompatActivity {
                         if ("0".equals(orderxml.getResultno())) {
 
                         }
+                    }
+                });
+    }
+
+    private void requestCharles() {
+        new Retrofit.Builder()
+                .client(client)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(SimpleXmlConverterFactory.create())
+                .baseUrl("https://api.yuncheapp.cn/pearl-server/api/")
+                .build()
+                .create(ApiService.class)
+                .getCharles()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Object>() {
+                    @Override
+                    public void onCompleted() {
+                        Log.i("xupeng", "onCompleted");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.i("xupeng", "onError");
+
+                    }
+
+                    @Override
+                    public void onNext(Object o) {
+                        Log.i("xupeng", "onNext");
                     }
                 });
     }

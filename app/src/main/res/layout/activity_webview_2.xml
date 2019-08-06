@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="jpush.test.com.activity.WebviewActivity_2">
+
+
+    <!--<WebView-->
+        <!--android:id="@+id/web_webview_1"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:overScrollMode="never"-->
+        <!--android:scrollbarSize="3.67dip" />-->
+
+    <WebView
+        android:id="@+id/web_webview_2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:overScrollMode="never"
+        android:scrollbarSize="3.67dip" />
+</LinearLayout>

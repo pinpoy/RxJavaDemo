@@ -35,7 +35,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import jpush.test.com.BuildConfig;
 import jpush.test.com.R;
-import jpush.test.com.bean.BrowserInfo;
 import jpush.test.com.bean.BrowserInfo_2;
 import jpush.test.com.rxjavademo.ApiService;
 import jpush.test.com.rxjavademo.RetrofitManager;
@@ -478,7 +477,6 @@ public class WebviewActivity extends AppCompatActivity implements Bridge.RemoveW
         Log.i("xupeng", "remove操作执行一次");
 
         Toast.makeText(WebviewActivity.this, "结束vpn进程", Toast.LENGTH_SHORT).show();
-        SystemClock.sleep(5000);
         if (exeCommand("am force-stop it.colucciweb.sstpvpnclient")) {
             SystemClock.sleep(5000);
         }
