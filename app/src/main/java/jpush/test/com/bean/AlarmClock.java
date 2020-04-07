@@ -10,44 +10,14 @@ import org.greenrobot.greendao.annotation.Generated;
  */
 @Entity
 public class AlarmClock {
-    @Id
-    private long id;
+    @Id(autoincrement = true)
+    private Long id;
     private String name;
     private String tag;
     private String ringName;
     private String ringUrl;
-    public String getRingUrl() {
-        return this.ringUrl;
-    }
-    public void setRingUrl(String ringUrl) {
-        this.ringUrl = ringUrl;
-    }
-    public String getRingName() {
-        return this.ringName;
-    }
-    public void setRingName(String ringName) {
-        this.ringName = ringName;
-    }
-    public String getTag() {
-        return this.tag;
-    }
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
-    public String getName() {
-        return this.name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-    public long getId() {
-        return this.id;
-    }
-    public void setId(long id) {
-        this.id = id;
-    }
-    @Generated(hash = 1375961375)
-    public AlarmClock(long id, String name, String tag, String ringName,
+    @Generated(hash = 1797426906)
+    public AlarmClock(Long id, String name, String tag, String ringName,
             String ringUrl) {
         this.id = id;
         this.name = name;
@@ -58,4 +28,35 @@ public class AlarmClock {
     @Generated(hash = 238396230)
     public AlarmClock() {
     }
+    public Long getId() {
+        return this.id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
+    public String getName() {
+        return this.name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public String getTag() {
+        return this.tag;
+    }
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+    public String getRingName() {
+        return this.ringName;
+    }
+    public void setRingName(String ringName) {
+        this.ringName = ringName;
+    }
+    public String getRingUrl() {
+        return this.ringUrl;
+    }
+    public void setRingUrl(String ringUrl) {
+        this.ringUrl = ringUrl;
+    }
+
 }

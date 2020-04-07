@@ -22,13 +22,13 @@ public class UserDao extends AbstractDao<User, Long> {
     /**
      * Properties of entity User.<br/>
      * Can be used for QueryBuilder and for referencing column names.
-    */
+     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Name = new Property(1, String.class, "name", false, "NAME");
         public final static Property Age = new Property(2, int.class, "age", false, "AGE");
         public final static Property IsBoy = new Property(3, boolean.class, "isBoy", false, "IS_BOY");
-    };
+    }
 
 
     public UserDao(DaoConfig config) {
@@ -43,7 +43,7 @@ public class UserDao extends AbstractDao<User, Long> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"USER\" (" + //
-                "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
+                "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "\"NAME\" TEXT," + // 1: name
                 "\"AGE\" INTEGER NOT NULL ," + // 2: age
                 "\"IS_BOY\" INTEGER NOT NULL );"); // 3: isBoy
@@ -126,6 +126,11 @@ public class UserDao extends AbstractDao<User, Long> {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public boolean hasKey(User entity) {
+        return entity.getId() != null;
     }
 
     @Override

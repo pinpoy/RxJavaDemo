@@ -3,8 +3,11 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/RxJavaDemo.iml" filepath="$PROJECT_DIR$/RxJavaDemo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Socket/RxJavaDemo-Socket.iml" filepath="$PROJECT_DIR$/Socket/RxJavaDemo-Socket.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/RxJavaDemo-app.iml" filepath="$PROJECT_DIR$/app/RxJavaDemo-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/Socket/Socket.iml" filepath="$PROJECT_DIR$/Socket/Socket.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/github-RxJavaDemo.iml" filepath="$PROJECT_DIR$/github-RxJavaDemo.iml" />
     </modules>
   </component>
 </project>
