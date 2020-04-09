@@ -88,8 +88,7 @@ dependencies {
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
 
     //GreenDao 3.0采用注解的方式来定义实体类，通过gradle插件生成相应的代码。
-    compile 'org.greenrobot:greendao:3.0.1'
-    compile 'org.greenrobot:greendao-generator:3.0.0'
+    compile 'org.greenrobot:greendao:3.2.2'
 
     //Dagger2
     compile 'com.google.dagger:dagger:2.4'
