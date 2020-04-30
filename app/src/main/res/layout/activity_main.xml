@@ -144,6 +144,25 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
+
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_line"
+        android:clickable="false"
+        android:saveEnabled="false"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@color/colorAccent">
+
+        <jpush.test.com.widget.ScrollArrow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorPrimary"
+            android:clickable="false"
+            android:saveEnabled="false" />
+    </LinearLayout>
+
 
 </RelativeLayout>

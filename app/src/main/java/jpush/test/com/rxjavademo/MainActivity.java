@@ -1,7 +1,11 @@
 package jpush.test.com.rxjavademo;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -12,6 +16,7 @@ import android.telephony.TelephonyManager;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +29,10 @@ import com.google.gson.Gson;
 import com.jakewharton.rxbinding.view.RxView;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
@@ -72,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
     TextView tv2;
     @Bind(R.id.tv_permission)
     TextView tvPermission;
+    @Bind(R.id.ll_line)
+    LinearLayout linearLayout;
     private StringBuffer sb = new StringBuffer();
     // Camera Permissions
     public static final int REQUEST_TAKE_PHOTO = 0x002;
@@ -120,6 +131,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }, 5000);
 
+        linearLayout.setEnabled(false);
+        linearLayout.setClickable(false);
     }
 
     /**
@@ -273,6 +286,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @SuppressLint("ResourceType")
     @OnClick({R.id.tv1, R.id.clear, R.id.tv_download, R.id.tv_greendao, R.id.tv_sha_256,
             R.id.tv_request_xml, R.id.tv_open_webview, R.id.tv_notification})
     void onClickEvent(View view) {
@@ -283,10 +297,10 @@ public class MainActivity extends AppCompatActivity {
                 //rxJavaMethod2();
                 //rxJavaMethod3();
                 //rxJavaMethod4();
-                rxJavaMethod5();
+//                rxJavaMethod5();
 //                rxJavaMethod7();
 
-                String s = XAdSDKFoundationFacade.getInstance().getCommonUtils().md5("d4:b5:d8:3a:0d:a4" + "&" + "861883248170984" + "&" + "&");
+//                String s = XAdSDKFoundationFacade.getInstance().getCommonUtils().md5("d4:b5:d8:3a:0d:a4" + "&" + "861883248170984" + "&" + "&");
 
                 //639cda89a81e16091bd306efd114c251  真实
                 //639cda89a81e16091bd306efd114c251
@@ -304,9 +318,28 @@ public class MainActivity extends AppCompatActivity {
 
 //                String s1 = Hello.helloJni();
 //                Toast.makeText(this, s1, Toast.LENGTH_SHORT).show();
+//
+//                String s1 = Java2CJNI.java2c();
+//                Toast.makeText(this, s1, Toast.LENGTH_SHORT).show();
 
-                String s1 = Java2CJNI.java2c();
-                Toast.makeText(this, s1, Toast.LENGTH_SHORT).show();
+//                InputStream inputStream = getResources().openRawResource(R.drawable.arrow);
+
+
+                try {
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inSampleSize = 3;
+                    AssetManager assets = getResources().getAssets();
+                    InputStream jpg = assets.open("arrow.jpg");
+                    InputStream png = assets.open("arrow.png");
+                    Bitmap bitmap = BitmapFactory.decodeStream(jpg);
+                    int byteCount = bitmap.getByteCount();
+                    Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.arrow, options);
+                    Toast.makeText(this, "png--" + png.available() + "jpg--" + jpg.available() + "byteCount--" + byteCount + "bitmap1-" + bitmap1.getByteCount(), Toast.LENGTH_SHORT).show();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 break;
 
             case R.id.tv_greendao:      //GreenDao
